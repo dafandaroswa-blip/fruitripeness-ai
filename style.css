@@ -1,0 +1,955 @@
+/* ═══════════════════════════════════════════════════════════════
+   FRUITRIPENESS AI  ×  PERSONA 4 VISUAL STYLE
+   ═══════════════════════════════════════════════════════════════
+   Palet:
+     --p4-yellow      #FFE01B   Background utama / aksen utama
+     --p4-black       #0D0D0D   Border, teks, offset shadow
+     --p4-red         #CC0015   "Terlalu Matang" / error
+     --p4-white       #FAFAF5   Background panel
+     --p4-gray-mid    #888780   Teks muted
+     --p4-green       #1A6B2A   "Mentah" (ripeness box)
+     --p4-amber       #E07A00   "Matang" (ripeness box)
+   
+   Tipografi:
+     Display  →  Bebas Neue   (condensed bold, semua caps)
+     Body     →  Rajdhani 600/700  (angular semi-bold)
+     Data     →  Space Mono   (angka/persentase)
+   
+   Signature element:
+     TV "Midnight Channel" sebagai area upload
+     (referensi ke mekanik utama Persona 4)
+   ═══════════════════════════════════════════════════════════════ */
+
+
+/* ── Design Tokens ─────────────────────────────────────────── */
+:root {
+  --p4-yellow:     #FFE01B;
+  --p4-yellow-dk:  #C9A900;
+  --p4-black:      #0D0D0D;
+  --p4-red:        #CC0015;
+  --p4-white:      #FAFAF5;
+  --p4-gray-mid:   #888780;
+  --p4-gray-light: #D4D2C8;
+  --p4-green:      #1A6B2A;
+  --p4-amber:      #D97500;
+  --p4-dark-panel: #111008;
+
+  --border:        4px solid var(--p4-black);
+  --shadow-comic:  8px 8px 0px var(--p4-black);
+  --shadow-sm:     4px 4px 0px var(--p4-black);
+
+  --ff-display:   'Bebas Neue', sans-serif;
+  --ff-body:      'Rajdhani', sans-serif;
+  --ff-mono:      'Space Mono', monospace;
+
+  --radius-tv:    12px 12px 6px 6px;
+  --radius-btn:   2px;
+}
+
+
+/* ── Reset / Base ────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--ff-body);
+  font-weight: 600;
+  color: var(--p4-black);
+  /* ─── Persona 4 signature background: yellow + diagonal hatching ─── */
+  background-color: var(--p4-yellow);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0px, transparent 14px,
+    rgba(0, 0, 0, 0.065) 14px, rgba(0, 0, 0, 0.065) 28px
+  );
+  min-height: 100vh;
+}
+
+
+/* ── App Shell ───────────────────────────────────────────── */
+.app {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 20px 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════════════════════════ */
+.site-header {
+  position: relative;
+  background: var(--p4-black);
+  color: var(--p4-yellow);
+  padding: 0;
+  margin-bottom: 28px;
+  border: var(--border);
+  border-top: none;
+  overflow: hidden;
+}
+
+/* Segitiga dekoratif kiri & kanan (P4 style angular accents) */
+.header-tri {
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+.header-tri--left {
+  left: 0;
+  border-width: 100px 60px 0 0;
+  border-color: rgba(255, 224, 27, 0.12) transparent transparent transparent;
+}
+.header-tri--right {
+  right: 0;
+  border-width: 0 60px 100px 0;
+  border-color: transparent rgba(255, 224, 27, 0.12) transparent transparent;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 28px;
+}
+
+.header-eyebrow {
+  display: block;
+  font-family: var(--ff-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--p4-yellow);
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+
+.header-title {
+  font-family: var(--ff-display);
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  letter-spacing: 0.02em;
+  color: var(--p4-yellow);
+  line-height: 0.95;
+}
+
+.title-ai {
+  color: var(--p4-red);
+}
+
+.header-sub {
+  font-family: var(--ff-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: rgba(255, 224, 27, 0.6);
+  margin-top: 6px;
+}
+
+/* Badge kanan header */
+.header-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 3px solid var(--p4-yellow);
+  padding: 10px 16px;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.badge-num {
+  font-family: var(--ff-display);
+  font-size: 2rem;
+  color: var(--p4-yellow);
+  line-height: 1;
+}
+.badge-label {
+  font-family: var(--ff-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  color: rgba(255, 224, 27, 0.65);
+  text-align: center;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   MAIN GRID
+   ═══════════════════════════════════════════════════════════════ */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 840px) {
+  .main-grid { grid-template-columns: 1fr; }
+}
+
+
+/* ── Panel shared styles ─────────────────────────────────── */
+.panel {
+  background: var(--p4-white);
+  border: var(--border);
+  box-shadow: var(--shadow-comic);
+  padding: 22px 22px 26px;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--p4-black);
+}
+
+.panel-num {
+  font-family: var(--ff-display);
+  font-size: 1.1rem;
+  background: var(--p4-black);
+  color: var(--p4-yellow);
+  padding: 1px 10px 0;
+  letter-spacing: 0.04em;
+}
+
+.panel-title {
+  font-family: var(--ff-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.08em;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   TV FRAME  (Midnight Channel)
+   ═══════════════════════════════════════════════════════════════ */
+.tv-frame {
+  cursor: pointer;
+  background: var(--p4-yellow);
+  border: var(--border);
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-tv);
+  padding: 12px 14px 0;
+  margin-bottom: 16px;
+  outline: none;
+  transition: box-shadow 0.1s, transform 0.1s;
+}
+
+.tv-frame:hover,
+.tv-frame:focus-visible {
+  box-shadow: 10px 10px 0px var(--p4-black);
+  transform: translate(-2px, -2px);
+}
+
+.tv-frame.dragging {
+  outline: 3px dashed var(--p4-black);
+  outline-offset: 4px;
+}
+
+/* Nama "brand" di atas layar */
+.tv-top-bar {
+  font-family: var(--ff-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-align: center;
+  color: var(--p4-black);
+  margin-bottom: 8px;
+}
+
+/* Layar TV */
+.tv-screen {
+  position: relative;
+  background: #0A0905;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 3px solid var(--p4-black);
+}
+
+/* Scanlines overlay — selalu di atas gambar */
+.tv-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px, transparent 3px,
+    rgba(0, 0, 0, 0.18) 3px, rgba(0, 0, 0, 0.18) 4px
+  );
+}
+
+/* Chin / bagian bawah TV */
+.tv-chin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 0 10px;
+}
+.tv-power-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--p4-black);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--p4-yellow);
+}
+
+
+/* ── TV Idle State ───────────────────────────────────────── */
+.tv-idle {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px;
+  color: rgba(255, 224, 27, 0.85);
+  text-align: center;
+}
+
+.tv-static-line {
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+  opacity: 0.4;
+  animation: staticFlicker 0.12s steps(1) infinite;
+}
+
+.tv-channel-name {
+  font-family: var(--ff-display);
+  font-size: clamp(1rem, 3vw, 1.45rem);
+  letter-spacing: 0.18em;
+  color: var(--p4-yellow);
+  text-shadow: 0 0 10px rgba(255, 224, 27, 0.7);
+  animation: tvGlow 2.4s ease-in-out infinite alternate;
+}
+
+.tv-instruction {
+  font-family: var(--ff-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.6);
+  margin-top: 6px;
+}
+
+.tv-blink {
+  font-family: var(--ff-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  color: var(--p4-yellow);
+  animation: blink 1.2s steps(1) infinite;
+}
+
+.tv-hint {
+  font-family: var(--ff-mono);
+  font-size: 0.55rem;
+  color: rgba(255, 224, 27, 0.35);
+  margin-top: 4px;
+}
+
+/* ── TV Preview State ────────────────────────────────────── */
+.tv-preview {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.tv-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Scan corners (kuning — gaya P4 target lock) */
+.sc {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--p4-yellow);
+}
+.sc-tl { top: 8px;  left: 8px;  border-right: none; border-bottom: none; }
+.sc-tr { top: 8px;  right: 8px; border-left: none;  border-bottom: none; }
+.sc-bl { bottom: 8px; left: 8px;  border-right: none; border-top: none;  }
+.sc-br { bottom: 8px; right: 8px; border-left: none;  border-top: none;  }
+
+/* Tombol hapus/ganti gambar */
+.tv-remove-btn {
+  position: absolute;
+  top: 8px; right: 8px;
+  z-index: 5;
+  width: 26px; height: 26px;
+  background: var(--p4-black);
+  color: var(--p4-yellow);
+  border: 2px solid var(--p4-yellow);
+  border-radius: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: background 0.1s, color 0.1s;
+}
+.tv-remove-btn:hover {
+  background: var(--p4-red);
+  border-color: var(--p4-red);
+  color: #fff;
+}
+
+
+/* ── Validasi message ────────────────────────────────────── */
+.validation-msg {
+  font-family: var(--ff-body);
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--p4-red);
+  letter-spacing: 0.04em;
+  padding: 6px 10px;
+  border-left: 3px solid var(--p4-red);
+  background: rgba(204, 0, 21, 0.07);
+  margin-bottom: 12px;
+}
+.validation-msg::before { content: "! "; }
+
+
+/* ── Tombol Analisis ─────────────────────────────────────── */
+.btn-analyze {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: var(--p4-yellow);
+  color: var(--p4-black);
+  font-family: var(--ff-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.1em;
+  border: var(--border);
+  border-radius: var(--radius-btn);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.08s;
+  position: relative;
+}
+
+.btn-analyze:hover {
+  /* efek "pencet tombol" — shadow mengecil, elemen turun */
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+.btn-analyze:active {
+  transform: translate(5px, 5px);
+  box-shadow: none;
+}
+
+.btn-analyze:disabled {
+  background: var(--p4-gray-light);
+  color: var(--p4-gray-mid);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   RESULT PANEL — STATE CONTAINERS
+   ═══════════════════════════════════════════════════════════════ */
+.result-panel {
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── State: Empty ────────────────────────────────────────── */
+.state-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 30px;
+  text-align: center;
+  min-height: 320px;
+}
+
+.empty-arcana {
+  font-family: var(--ff-display);
+  font-size: 6rem;
+  color: var(--p4-gray-light);
+  line-height: 1;
+  border: 4px solid var(--p4-gray-light);
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  animation: emptyFloat 3s ease-in-out infinite;
+}
+
+.empty-title {
+  font-family: var(--ff-display);
+  font-size: 1.3rem;
+  letter-spacing: 0.1em;
+  color: var(--p4-gray-mid);
+}
+
+.empty-sub {
+  font-size: 0.85rem;
+  color: var(--p4-gray-mid);
+  line-height: 1.6;
+}
+.empty-sub strong { color: var(--p4-black); }
+
+/* ── State: Loading ──────────────────────────────────────── */
+.state-loading {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 30px;
+  text-align: center;
+  min-height: 320px;
+}
+
+/* Arcana spinner — outer ring */
+.arcana-spinner {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 8px;
+}
+
+.spin-ring {
+  position: absolute;
+  inset: 0;
+  border: 4px solid var(--p4-yellow);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spinRing 0.9s linear infinite;
+}
+
+.spin-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: var(--p4-black);
+  animation: spinInner 1.8s ease-in-out infinite;
+}
+
+.loading-title {
+  font-family: var(--ff-display);
+  font-size: 1.3rem;
+  letter-spacing: 0.1em;
+  color: var(--p4-black);
+}
+
+.loading-sub {
+  font-size: 0.82rem;
+  color: var(--p4-gray-mid);
+  letter-spacing: 0.05em;
+}
+
+/* Ellipsis (...) animasi */
+.ellipsis span {
+  animation: ellipsisBlink 1.4s infinite;
+  opacity: 0;
+}
+.ellipsis span:nth-child(2) { animation-delay: 0.2s; }
+.ellipsis span:nth-child(3) { animation-delay: 0.4s; }
+
+/* ── State: Error ────────────────────────────────────────── */
+.state-error {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 30px;
+  text-align: center;
+  min-height: 320px;
+}
+
+.error-cross {
+  font-size: 3rem;
+  color: var(--p4-red);
+  line-height: 1;
+}
+
+.error-title {
+  font-family: var(--ff-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.1em;
+  color: var(--p4-red);
+}
+
+.error-msg {
+  font-size: 0.88rem;
+  color: var(--p4-black);
+  max-width: 300px;
+  line-height: 1.5;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   RESULT CARD
+   ═══════════════════════════════════════════════════════════════ */
+.result-card {
+  background: var(--p4-dark-panel);
+  border: var(--border);
+  padding: 20px;
+  animation: p4Appear 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── Nama buah ───────────────────────────────────────────── */
+.rc-fruit-block {
+  margin-bottom: 16px;
+}
+
+.rc-eyebrow {
+  font-family: var(--ff-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: rgba(255, 224, 27, 0.55);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.rc-fruit-name {
+  font-family: var(--ff-display);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  letter-spacing: 0.05em;
+  color: var(--p4-yellow);
+  line-height: 1;
+}
+
+.rc-divider {
+  font-size: 0.65rem;
+  color: rgba(255, 224, 27, 0.2);
+  letter-spacing: 0;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+
+/* ── Ripeness Selector (P4 style boxes) ─────────────────── */
+.ripeness-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.r-box {
+  border: 3px solid rgba(255, 224, 27, 0.25);
+  padding: 10px 6px;
+  text-align: center;
+  cursor: default;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Star indicator — tersembunyi saat non-aktif */
+.r-box-star {
+  display: block;
+  font-size: 0.65rem;
+  color: transparent;
+  transition: color 0.2s;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.r-box-label {
+  font-family: var(--ff-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 224, 27, 0.35);
+  display: block;
+  line-height: 1.1;
+  transition: color 0.2s;
+}
+
+/* ── Aktif: Mentah ── */
+.r-box[data-level="mentah"].active {
+  border-color: var(--p4-green);
+  background: rgba(26, 107, 42, 0.3);
+  box-shadow: 4px 4px 0 var(--p4-green);
+}
+.r-box[data-level="mentah"].active .r-box-label { color: #5EDD72; }
+.r-box[data-level="mentah"].active .r-box-star  { color: #5EDD72; }
+
+/* ── Aktif: Matang ── */
+.r-box[data-level="matang"].active {
+  border-color: var(--p4-yellow);
+  background: rgba(255, 224, 27, 0.15);
+  box-shadow: 4px 4px 0 var(--p4-yellow);
+}
+.r-box[data-level="matang"].active .r-box-label { color: var(--p4-yellow); }
+.r-box[data-level="matang"].active .r-box-star  { color: var(--p4-yellow); }
+
+/* ── Aktif: Terlalu Matang ── */
+.r-box[data-level="overripe"].active {
+  border-color: var(--p4-red);
+  background: rgba(204, 0, 21, 0.2);
+  box-shadow: 4px 4px 0 var(--p4-red);
+}
+.r-box[data-level="overripe"].active .r-box-label { color: #FF5566; }
+.r-box[data-level="overripe"].active .r-box-star  { color: #FF5566; }
+
+
+/* ── Confidence / HP Bar ─────────────────────────────────── */
+.conf-block {
+  margin-bottom: 18px;
+}
+
+.conf-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.conf-label {
+  font-family: var(--ff-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 224, 27, 0.55);
+}
+
+.conf-value {
+  font-family: var(--ff-mono);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--p4-yellow);
+}
+
+/* HP Track (dark background, segmented) */
+.hp-track {
+  position: relative;
+  height: 18px;
+  background: #000;
+  border: 2px solid rgba(255, 224, 27, 0.3);
+  overflow: hidden;
+}
+
+.hp-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #FFD700, #FFE01B 80%, #FFF068);
+  transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  z-index: 1;
+}
+
+/* Segmen visual (dekoratif — kayak HP bar di game P4) */
+.hp-segments {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  pointer-events: none;
+}
+.hp-segments span {
+  flex: 1;
+  border-right: 1px solid rgba(0, 0, 0, 0.4);
+}
+.hp-segments span:last-child { border-right: none; }
+
+
+/* ── Ciri Visual ─────────────────────────────────────────── */
+.traits-block {
+  margin-bottom: 16px;
+  border-top: 2px solid rgba(255, 224, 27, 0.15);
+  padding-top: 14px;
+}
+
+.traits-header {
+  font-family: var(--ff-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  color: rgba(255, 224, 27, 0.6);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.trait-row {
+  display: grid;
+  grid-template-columns: 80px auto 1fr;
+  gap: 4px;
+  align-items: baseline;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255, 224, 27, 0.07);
+}
+.trait-row:last-child { border-bottom: none; }
+
+.trait-key {
+  font-family: var(--ff-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 224, 27, 0.5);
+}
+
+.trait-sep {
+  color: rgba(255, 224, 27, 0.25);
+  font-size: 0.9rem;
+}
+
+.trait-val {
+  font-family: var(--ff-body);
+  font-weight: 600;
+  font-size: 0.83rem;
+  color: rgba(255, 255, 240, 0.88);
+  line-height: 1.4;
+}
+
+
+/* ── Rekomendasi ─────────────────────────────────────────── */
+.rec-block {
+  border: 2px solid rgba(255, 224, 27, 0.3);
+  padding: 12px 14px;
+  background: rgba(255, 224, 27, 0.05);
+}
+
+.rec-header {
+  display: block;
+  font-family: var(--ff-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--p4-yellow);
+  margin-bottom: 6px;
+}
+
+.rec-text {
+  font-family: var(--ff-body);
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 240, 0.85);
+  line-height: 1.55;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════════════════ */
+.site-footer {
+  text-align: center;
+  padding: 30px 20px 28px;
+  margin-top: 8px;
+}
+
+.footer-title {
+  font-family: var(--ff-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  color: var(--p4-black);
+}
+
+.footer-meta {
+  font-family: var(--ff-body);
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.55);
+  margin-top: 4px;
+}
+
+.footer-powered {
+  font-family: var(--ff-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: rgba(0, 0, 0, 0.4);
+  margin-top: 8px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* TV static flicker */
+@keyframes staticFlicker {
+  0%   { opacity: 0.4; }
+  25%  { opacity: 0.1; }
+  50%  { opacity: 0.6; }
+  75%  { opacity: 0.2; }
+  100% { opacity: 0.4; }
+}
+
+/* Midnight Channel name glow */
+@keyframes tvGlow {
+  0%   { text-shadow: 0 0 8px rgba(255, 224, 27, 0.5); }
+  100% { text-shadow: 0 0 20px rgba(255, 224, 27, 0.95), 0 0 40px rgba(255, 224, 27, 0.4); }
+}
+
+/* Blinking instruction text */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Loading ring spinner */
+@keyframes spinRing {
+  to { transform: rotate(360deg); }
+}
+
+/* Spinning inner star — opposite direction, slower */
+@keyframes spinInner {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(-180deg) scale(0.8); }
+  100% { transform: rotate(-360deg) scale(1); }
+}
+
+/* Ellipsis dots */
+@keyframes ellipsisBlink {
+  0%, 100% { opacity: 0; }
+  50%       { opacity: 1; }
+}
+
+/* Empty arcana float */
+@keyframes emptyFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* Result card appear (P4-style wipe/snap in) */
+@keyframes p4Appear {
+  0%   { opacity: 0; transform: scale(0.96) translateY(12px); }
+  60%  { opacity: 1; transform: scale(1.01) translateY(-3px); }
+  100% { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  .app { padding: 0 14px 0; }
+  .header-inner { padding: 18px 16px; }
+  .panel { padding: 16px 16px 20px; }
+  .panel-title { font-size: 1.05rem; }
+  .ripeness-selector { gap: 6px; }
+  .r-box { padding: 8px 4px; }
+  .r-box-label { font-size: 0.72rem; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

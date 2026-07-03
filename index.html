@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FruitRipeness AI | Midnight Channel</title>
+
+  <!--
+    FRUITRIPENESS AI — Versi GitHub Pages (Frontend Only)
+    =====================================================
+    Tugas Praktikum Pengolahan Citra Digital
+    Visual style: Persona 4 (Atlus, 2008)
+    =====================================================
+    File ini adalah satu-satunya HTML.
+    Upload folder ini ke GitHub → aktifkan GitHub Pages → selesai.
+  -->
+
+  <!-- Google Fonts: Bebas Neue (HUD/heading) + Rajdhani (body) + Space Mono (data) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- ═══════════════════════════════════════
+         HEADER  —  P4 style black title bar
+         ═══════════════════════════════════════ -->
+    <header class="site-header">
+
+      <!-- Dekorasi segitiga kiri -->
+      <div class="header-tri header-tri--left" aria-hidden="true"></div>
+
+      <div class="header-inner">
+        <div class="header-title-block">
+          <span class="header-eyebrow">■ PRACTICAL COURSE — DIGITAL IMAGE PROCESSING ■</span>
+          <h1 class="header-title">
+            FRUITRIPENESS<span class="title-ai"> AI</span>
+          </h1>
+          <p class="header-sub">SISTEM ANALISIS KEMATANGAN BUAH BERBASIS CITRA DIGITAL</p>
+        </div>
+
+        <!-- Badge kanan -->
+        <div class="header-badge">
+          <span class="badge-num">P4</span>
+          <span class="badge-label">VISION<br/>SYSTEM</span>
+        </div>
+      </div>
+
+      <!-- Dekorasi segitiga kanan -->
+      <div class="header-tri header-tri--right" aria-hidden="true"></div>
+
+    </header>
+
+
+    <!-- ═══════════════════════════════════════
+         MAIN GRID  —  dua panel berdampingan
+         ═══════════════════════════════════════ -->
+    <main class="main-grid">
+
+      <!-- ─────────────────────────────────────
+           PANEL KIRI  :  UPLOAD (TV / Midnight Channel)
+           ───────────────────────────────────── -->
+      <section class="panel tv-panel" aria-labelledby="upload-title">
+
+        <div class="panel-header">
+          <span class="panel-num">01</span>
+          <h2 id="upload-title" class="panel-title">CITRA MASUKAN</h2>
+        </div>
+
+        <!-- TV Frame (referensi Midnight Channel dari Persona 4) -->
+        <div class="tv-frame" id="tvFrame" tabindex="0"
+             role="button" aria-label="Klik untuk upload gambar buah">
+
+          <!-- Bezel kuning + brand bar atas -->
+          <div class="tv-top-bar">MIDNIGHT CHANNEL</div>
+
+          <!-- Layar TV -->
+          <div class="tv-screen" id="tvScreen">
+
+            <!-- State: idle (belum ada gambar) -->
+            <div class="tv-idle" id="tvIdle">
+              <p class="tv-static-line" aria-hidden="true">〰〰〰〰〰〰〰〰〰〰〰〰</p>
+              <p class="tv-channel-name">MIDNIGHT CHANNEL</p>
+              <p class="tv-static-line" aria-hidden="true">〰〰〰〰〰〰〰〰〰〰〰〰</p>
+              <p class="tv-instruction">MASUKKAN FOTO BUAH</p>
+              <p class="tv-blink">▶ KLIK ATAU SERET GAMBAR ◀</p>
+              <p class="tv-hint">JPG &nbsp;·&nbsp; PNG &nbsp;·&nbsp; WEBP &nbsp;·&nbsp; maks 8MB</p>
+            </div>
+
+            <!-- State: preview gambar -->
+            <div class="tv-preview" id="tvPreview" hidden>
+              <img id="previewImg" alt="Preview buah yang diupload" />
+              <!-- Scan corners ala P4 (kuning) -->
+              <span class="sc sc-tl" aria-hidden="true"></span>
+              <span class="sc sc-tr" aria-hidden="true"></span>
+              <span class="sc sc-bl" aria-hidden="true"></span>
+              <span class="sc sc-br" aria-hidden="true"></span>
+              <!-- Tombol ganti gambar -->
+              <button class="tv-remove-btn" id="removeBtn"
+                      aria-label="Ganti gambar" title="Ganti gambar">✕</button>
+            </div>
+
+            <!-- Scanlines overlay (selalu di atas, pointer-events: none) -->
+            <div class="tv-scanlines" aria-hidden="true"></div>
+
+          </div><!-- end .tv-screen -->
+
+          <!-- Chin / bawah TV -->
+          <div class="tv-chin">
+            <span class="tv-power-dot" aria-hidden="true"></span>
+          </div>
+
+        </div><!-- end .tv-frame -->
+
+        <!-- Input file tersembunyi -->
+        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" hidden />
+
+        <!-- Pesan validasi -->
+        <p class="validation-msg" id="validationMsg" role="alert" hidden></p>
+
+        <!-- Tombol analisis -->
+        <button class="btn-analyze" id="analyzeBtn" type="button">
+          <span class="btn-icon" aria-hidden="true">⚡</span>
+          ANALISIS KEMATANGAN
+        </button>
+
+      </section><!-- end .tv-panel -->
+
+
+      <!-- ─────────────────────────────────────
+           PANEL KANAN  :  HASIL ANALISIS
+           ───────────────────────────────────── -->
+      <section class="panel result-panel" aria-labelledby="result-title">
+
+        <div class="panel-header">
+          <span class="panel-num">02</span>
+          <h2 id="result-title" class="panel-title">HASIL ANALISIS</h2>
+        </div>
+
+        <!-- ── State 1: Kosong ── -->
+        <div class="state-empty" id="stateEmpty">
+          <div class="empty-arcana" aria-hidden="true">?</div>
+          <p class="empty-title">BELUM ADA ANALISIS</p>
+          <p class="empty-sub">Upload foto buah lalu klik<br/>
+            <strong>⚡ ANALISIS KEMATANGAN</strong></p>
+        </div>
+
+        <!-- ── State 2: Loading ── -->
+        <div class="state-loading" id="stateLoading" hidden aria-live="polite">
+          <div class="arcana-spinner" aria-hidden="true">
+            <div class="spin-ring"></div>
+            <div class="spin-inner">✦</div>
+          </div>
+          <p class="loading-title">MEMINDAI SHADOW<span class="ellipsis"><span>.</span><span>.</span><span>.</span></span></p>
+          <p class="loading-sub">Menganalisis warna, tekstur &amp; bentuk citra</p>
+        </div>
+
+        <!-- ── State 3: Error ── -->
+        <div class="state-error" id="stateError" hidden role="alert">
+          <p class="error-cross" aria-hidden="true">✕</p>
+          <p class="error-title">ANALISIS GAGAL</p>
+          <p class="error-msg" id="errorMsg">Terjadi kesalahan.</p>
+        </div>
+
+        <!-- ── State 4: Hasil ── -->
+        <div class="result-card" id="resultCard" hidden>
+
+          <!-- Nama buah -->
+          <div class="rc-fruit-block">
+            <span class="rc-eyebrow">JENIS BUAH TERDETEKSI</span>
+            <h3 class="rc-fruit-name" id="resultFruitName">PISANG</h3>
+            <div class="rc-divider" aria-hidden="true">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+          </div>
+
+          <!-- Tiga kotak ripeness (P4-style selection) -->
+          <div class="ripeness-selector" role="group" aria-label="Tingkat kematangan">
+            <div class="r-box" id="rboxMentah" data-level="mentah">
+              <span class="r-box-star" aria-hidden="true">★</span>
+              <span class="r-box-label">MENTAH</span>
+            </div>
+            <div class="r-box" id="rboxMatang" data-level="matang">
+              <span class="r-box-star" aria-hidden="true">★</span>
+              <span class="r-box-label">MATANG</span>
+            </div>
+            <div class="r-box" id="rboxOverripe" data-level="overripe">
+              <span class="r-box-star" aria-hidden="true">★</span>
+              <span class="r-box-label">TLR<br/>MATANG</span>
+            </div>
+          </div>
+
+          <!-- Confidence (P4 HP bar style) -->
+          <div class="conf-block">
+            <div class="conf-header-row">
+              <span class="conf-label">CONFIDENCE LV</span>
+              <span class="conf-value" id="confValue">0%</span>
+            </div>
+            <div class="hp-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="hpProgressBar">
+              <div class="hp-fill" id="hpFill"></div>
+              <div class="hp-segments" aria-hidden="true">
+                <!-- segmentasi visual bar (dekoratif) -->
+                <span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span>
+                <span></span><span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ciri visual -->
+          <div class="traits-block">
+            <p class="traits-header">◆ CIRI VISUAL TERDETEKSI ◆</p>
+            <div class="trait-row">
+              <span class="trait-key">WARNA</span>
+              <span class="trait-sep" aria-hidden="true">：</span>
+              <span class="trait-val" id="traitWarna">-</span>
+            </div>
+            <div class="trait-row">
+              <span class="trait-key">TEKSTUR</span>
+              <span class="trait-sep" aria-hidden="true">：</span>
+              <span class="trait-val" id="traitTekstur">-</span>
+            </div>
+            <div class="trait-row">
+              <span class="trait-key">BENTUK</span>
+              <span class="trait-sep" aria-hidden="true">：</span>
+              <span class="trait-val" id="traitBentuk">-</span>
+            </div>
+          </div>
+
+          <!-- Rekomendasi -->
+          <div class="rec-block">
+            <span class="rec-header">▶ REKOMENDASI KONSUMSI</span>
+            <p class="rec-text" id="recText">-</p>
+          </div>
+
+        </div><!-- end .result-card -->
+
+      </section><!-- end .result-panel -->
+
+    </main>
+
+
+    <!-- ═══════════════════════════════════════
+         FOOTER
+         ═══════════════════════════════════════ -->
+    <footer class="site-footer">
+      <p class="footer-title">FRUITRIPENESS AI &nbsp;|&nbsp; PRAKTIKUM PENGOLAHAN CITRA DIGITAL</p>
+      <!-- ↓ GANTI dengan nama & NIM lo sendiri ↓ -->
+      <p class="footer-meta">[NAMA MAHASISWA] &nbsp;·&nbsp; NIM: [NIM] &nbsp;·&nbsp; Teknik Informatika</p>
+      <p class="footer-powered">POWERED BY GOOGLE GEMINI VISION API</p>
+    </footer>
+
+  </div><!-- end .app -->
+
+  <script src="script.js"></script>
+</body>
+</html>
