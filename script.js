@@ -18,11 +18,11 @@
 // ──────────────────────────────────────────────────────────────
 const CONFIG = {
   // ↓ Ganti string ini dengan API key Gemini lo dari aistudio.google.com
-  API_KEY: 'AQ.Ab8RN6LmXOQfuD7b1mbO-V7Tp-RBKCyw3hUFd7ISCT9zAZdiaw',
+  API_KEY: 'AQ.Ab8RN6I7NSxh_abTxYLaL6Zl3LBiyLpZAKkBOclwakdwomB8QA',
 
   // Model yang dipakai — gemini-2.0-flash support input gambar (vision)
   // Kalau error "model not found", coba: gemini-1.5-flash
-  MODEL: 'gemini-2.0-flash',
+  MODEL: 'gemini-2.5-flash'
 };
 
 // Endpoint Gemini (key dikirim lewat query param karena ini direct browser call)
