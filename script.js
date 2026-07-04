@@ -26,8 +26,7 @@ const CONFIG = {
 };
 
 // Endpoint Gemini (key dikirim lewat query param karena ini direct browser call)
-const GEMINI_URL =
-  `https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.MODEL}:generateContent?key=${CONFIG.API_KEY}`;
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.MODEL}:generateContent`;
 
 
 // ──────────────────────────────────────────────────────────────
@@ -235,7 +234,14 @@ async function callGeminiAPI(file) {
 
   const res = await fetch(GEMINI_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: const res = await fetch(GEMINI_URL, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-goog-api-key': CONFIG.API_KEY,   // ← TAMBAHKAN baris ini
+  },
+  body: JSON.stringify(payload)
+});{ 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   });
 
